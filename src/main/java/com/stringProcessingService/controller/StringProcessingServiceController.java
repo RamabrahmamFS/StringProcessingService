@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stringProcessingService.dto.ResponseObject;
 import com.stringProcessingService.service.WordAnalysisService;
 
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/analyze")
@@ -18,8 +19,8 @@ public class StringProcessingServiceController {
 	private WordAnalysisService wordAnalysisService;
 
 	@PostMapping
-	public ResponseObject analyze(@RequestBody String input) {
-		return wordAnalysisService.analyzeString(input);
+	public ResponseObject analyze(@RequestBody Map<String, String> request) {
+		return wordAnalysisService.analyzeString(request.get("input"));
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.stringProcessingService.dto.ResponseObject;
@@ -25,7 +26,7 @@ public class WordAnalysisService {
 
 		return new ResponseObject(UUID.randomUUID(), wordCount, hasPalindrome, palindromeWords);
 	}
-
+	@Cacheable(value = "palindromeCache", key = "#word")
 	private boolean isPalindrome(String word) {
 		String cleaned = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
 		return cleaned.length() > 1 && cleaned.equals(new StringBuilder(cleaned).reverse().toString());
