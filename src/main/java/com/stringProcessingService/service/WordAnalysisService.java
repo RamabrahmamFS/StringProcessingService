@@ -3,7 +3,6 @@ package com.stringProcessingService.service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,7 @@ public class WordAnalysisService {
 		String[] words = input.split("\\s+");
 		int wordCount = words.length;
 
-		List<String> palindromeWords = Arrays.stream(words).filter(word -> isPalindrome(word))
-				.collect(Collectors.toList());
+		List<String> palindromeWords = Arrays.stream(words).filter(this::isPalindrome).toList();
 
 		boolean hasPalindrome = !palindromeWords.isEmpty();
 
@@ -29,6 +27,6 @@ public class WordAnalysisService {
 	@Cacheable(value = "palindromeCache", key = "#word")
 	private boolean isPalindrome(String word) {
 		String cleaned = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
-		return cleaned.length() > 1 && cleaned.equals(new StringBuilder(cleaned).reverse().toString());
+		return cleaned.length() > 1 && cleaned.contentEquals(new StringBuilder(cleaned).reverse().toString());
 	}
 }
